@@ -18,6 +18,22 @@ public class UserService {
     }
 
     public User getUserById(int id) {
-        return userRepository.getReferenceById(id);
+        return userRepository.findById(id).orElse(null);
+    }
+
+    public User getUserByEmail(String email) {
+        return userRepository.findByEmail(email).orElse(null);
+    }
+
+    public User createUser(User user) {
+        if(userRepository.findByEmail(user.getEmail()).isPresent()) {
+            return null;
+        }
+        return userRepository.save(user);
+    }
+
+    public User login(String email, String password) {
+        return userRepository.findByEmailAndPassword(email, password)
+                .orElse(null);
     }
 }
